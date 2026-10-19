@@ -1,0 +1,53 @@
+name: BitReaper
+options:
+  bundleIdPrefix: com.bitreaper
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+targets:
+  BitReaper:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources
+      - path: Resources
+    info:
+      path: Resources/Info.plist
+      properties:
+        CFBundleDisplayName: BitReaper
+        CFBundleName: BitReaper
+        CFBundleIconName: AppIcon
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"
+        LSApplicationCategoryType: public.app-category.utilities
+        LSMinimumSystemVersion: "14.0"
+        NSHumanReadableCopyright: "BitReaper — reap the bits you don't need."
+        NSPrincipalClass: NSApplication
+        NSDesktopFolderUsageDescription: BitReaper measures the size of files in your Desktop folder.
+        NSDocumentsFolderUsageDescription: BitReaper measures the size of files in your Documents folder.
+        NSDownloadsFolderUsageDescription: BitReaper measures the size of files in your Downloads folder.
+        NSRemovableVolumesUsageDescription: BitReaper measures the size of files on removable disks.
+        NSNetworkVolumesUsageDescription: BitReaper measures the size of files on network disks.
+        CFBundleDocumentTypes:
+          - CFBundleTypeName: Folder
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: None
+            LSItemContentTypes: [public.folder, public.volume]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.bitreaper.app
+        PRODUCT_NAME: BitReaper
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGN_STYLE: Manual
+        DEVELOPMENT_TEAM: ""
+        ENABLE_HARDENED_RUNTIME: NO
+        ENABLE_APP_SANDBOX: NO
+        COMBINE_HIDPI_IMAGES: YES
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
