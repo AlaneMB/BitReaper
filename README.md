@@ -6,16 +6,17 @@
 
 **See what's filling your disk. Collect what you don't need. Reap it in one go.**
 
-A native macOS disk-space analyzer with a fast tree view, a drag-and-drop collector and a synthwave soul.
+A native disk-space analyzer for macOS and Windows with a fast tree view, a drag-and-drop collector and a synthwave soul.
 
 ![macOS 14+](https://img.shields.io/badge/macOS-14%2B-a24bff?style=flat-square&logo=apple&logoColor=white)
+![Windows 10 & 11](https://img.shields.io/badge/Windows-10%20%26%2011-2f8bff?style=flat-square&logo=windows&logoColor=white)
 ![Swift](https://img.shields.io/badge/Swift-SwiftUI%20%2B%20AppKit-ff2bd6?style=flat-square&logo=swift&logoColor=white)
 ![Apple Silicon & Intel](https://img.shields.io/badge/Apple%20Silicon%20%26%20Intel-native-22e4f5?style=flat-square)
 ![License: MIT](https://img.shields.io/badge/license-MIT-ffc93c?style=flat-square)
 
 <img src="docs/images/demo.gif" width="760" alt="BitReaper in action">
 
-<sub>🎬 <a href="docs/bitreaper-demo.mp4">Watch the 20-second demo in 1080p</a> · ⬇️ <a href="https://github.com/Pau-mbox/BitReaper/releases/latest/download/BitReaper-macOS.zip">Download for macOS</a></sub>
+<sub>🎬 <a href="docs/bitreaper-demo.mp4">Watch the 20-second demo in 1080p</a> · ⬇️ <a href="https://github.com/Pau-mbox/BitReaper/releases/latest/download/BitReaper-macOS.zip">Download for macOS</a> · ⬇️ <a href="https://github.com/Pau-mbox/BitReaper/releases/latest/download/BitReaper-Windows-x64.zip">Download for Windows</a></sub>
 
 </div>
 
@@ -95,7 +96,32 @@ A universal app for Apple Silicon and Intel Macs, macOS 14 or later. See all ver
 3. For complete results, add BitReaper in **System Settings › Privacy & Security › Full Disk Access**. Without
    it, macOS hides Mail, Messages, Safari and other apps' data, which then shows up as hidden space.
 
+### Windows
+
+<a href="https://github.com/Pau-mbox/BitReaper/releases/latest/download/BitReaper-Windows-x64.zip"><img src="https://img.shields.io/badge/Download-BitReaper%20for%20Windows-2f8bff?style=for-the-badge&logo=windows&logoColor=white" alt="Download BitReaper for Windows"></a>
+
+One self-contained `BitReaper.exe` for Windows 10 and 11, nothing else to install. On Windows on ARM, take
+`BitReaper-Windows-arm64.zip` from the [Releases page](https://github.com/Pau-mbox/BitReaper/releases).
+
+1. Unzip it and run `BitReaper.exe`. It isn't code-signed yet, so the first time SmartScreen says
+   "Windows protected your PC": click **More info**, then **Run anyway**.
+2. To keep it, open **Settings** (the gear, or Ctrl+,) and click **Install BitReaper**, or run
+   `BitReaper.exe --install`. It installs for your user only, no administrator rights needed: a Start menu
+   shortcut, **Scan with BitReaper** when you right-click a folder or drive in Explorer, and an entry in
+   **Settings › Apps** to uninstall it.
+3. For complete results, click **Restart as Administrator**. Without it, Windows hides other users' profiles,
+   System Volume Information and parts of Windows and ProgramData, which then show up as hidden space.
+
+The Windows app has the same tree, collector, countdown and Put Back as the Mac one, with Windows conventions:
+deleted items go to the **Recycle Bin** (Windows asks first if an item is too big for it), junctions and symbolic
+links are listed but never followed, sizes are what files really take on disk (compressed, sparse and
+OneDrive cloud-only files included), and Windows, Program Files, your profile folders and drive roots can't be
+collected. **Space** opens a preview window (images, text, audio and video), and **Properties** is in the
+right-click menu.
+
 ## Build from source
+
+### macOS
 
 You need macOS 14 or later, Xcode 16+ and [XcodeGen](https://github.com/yonaskolb/XcodeGen).
 
@@ -108,22 +134,41 @@ Scripts/package.sh      # also zips it as dist/BitReaper-macOS.zip for a release
 open dist/BitReaper.app
 ```
 
+### Windows
+
+You need Windows 10 or 11 and the [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0).
+
+```powershell
+git clone https://github.com/Pau-mbox/BitReaper.git
+cd BitReaper
+dotnet test Windows\BitReaper.Tests                 # scanner, collector and deleter tests (in a temp folder)
+Windows\Scripts\build.ps1                          # dist\windows\x64\BitReaper.exe (self-contained, single file)
+Windows\Scripts\package.ps1                        # also zips x64 and arm64 builds for a release
+dist\windows\x64\BitReaper.exe
+```
+
+The [Windows workflow](.github/workflows/windows.yml) runs the tests on every push and pull request, and
+attaches both zips to the release when a `v*` tag is pushed.
+
 ## Keyboard shortcuts
 
-| Action | Shortcut |
-| --- | --- |
-| Scan folder… | ⌘O |
-| Disks and Folders | ⇧⌘D |
-| Rescan folder | ⌘R |
-| Find | ⌘F |
-| Tree / Largest Files | ⌘1 / ⌘2 |
-| Back / Forward | ⌘[ / ⌘] |
-| Enclosing folder / Zoom in | ⌘↑ / ⌘↓ (or Return, double-click) |
-| Quick Look | Space |
-| Add to / remove from Collector | ⌫ or ⌘⌫ |
-| Show collected items | ⌘K |
-| Delete collected items… | ⌥⌘⌫ |
-| Cancel deletion countdown | Esc |
+| Action | macOS | Windows |
+| --- | --- | --- |
+| Scan folder… | ⌘O | Ctrl+O |
+| Disks and Folders | ⇧⌘D | Ctrl+Shift+D |
+| Rescan folder | ⌘R | Ctrl+R or F5 |
+| Find | ⌘F | Ctrl+F |
+| Tree / Largest Files | ⌘1 / ⌘2 | Ctrl+1 / Ctrl+2 |
+| Back / Forward | ⌘[ / ⌘] | Alt+← / Alt+→ |
+| Enclosing folder / Zoom in | ⌘↑ / ⌘↓ (or Return, double-click) | Alt+↑ / Ctrl+↓ (or Enter, double-click) |
+| Expand / collapse a folder | → / ← | → / ← |
+| Quick Look / Preview | Space | Space |
+| Add to / remove from Collector | ⌫ or ⌘⌫ | Del or Backspace |
+| Show collected items | ⌘K | Ctrl+K |
+| Delete collected items… | ⌥⌘⌫ | Ctrl+Shift+Del |
+| Put back the last deletion | | Ctrl+Z |
+| Cancel deletion countdown | Esc | Esc |
+| Settings | ⌘, | Ctrl+, |
 
 ## How it works
 
@@ -144,7 +189,15 @@ Sources/Util     Theme, palette, formatting, icons, Quick Look, system access
 Resources        Info.plist and the asset catalog
 Art/source       Original artwork
 Scripts          build.sh · package.sh · process_art.py · make_video.py
+Windows          The Windows app (C#, .NET 8, WPF): same model, same art, same synthwave look
 ```
+
+The Windows app in `Windows/BitReaper` mirrors the macOS structure piece by piece (`Model/Scanner.cs`,
+`Model/ScanSession.cs`, `Views/FileTree.cs`…). Its scanner lists each folder in bulk with
+`GetFileInformationByHandleEx` (allocation sizes and file ids in one call), counts hard links once by file id on
+NTFS and ReFS, and never follows junctions, symbolic links or mount points. Recycling goes through the shell,
+and Put Back moves the item out of the Recycle Bin using its `$I` record. It reuses the artwork in
+`Resources/Assets.xcassets`; `Windows/Scripts/make_icon.py` builds the `.ico` from the app icon.
 
 ### Rebuilding the art and the demo
 
