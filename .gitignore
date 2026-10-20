@@ -4,3 +4,9 @@ dist/
 .DS_Store
 # Design reference only; not part of the app.
 Art/source/mockup.webp
+# Windows app
+Windows/**/bin/
+Windows/**/obj/
+Windows/out/
+.vs/
+*.user
